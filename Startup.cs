@@ -116,7 +116,7 @@ namespace dotnet_grocery_list
                 ValidateAudience = true,
                 ValidAudience = audience
             };
-
+            
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 TokenValidationParameters = tokenValidationParameters

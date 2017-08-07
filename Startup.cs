@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Swashbuckle.AspNetCore;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace dotnet_grocery_list
 {
@@ -34,7 +36,9 @@ namespace dotnet_grocery_list
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            var pathToDoc = Configuration["Swagger:FileName"];
+
             services.AddEntityFramework()
                 .AddDbContext<UserDbContext>(opt => opt.UseInMemoryDatabase());
 
@@ -42,16 +46,17 @@ namespace dotnet_grocery_list
                 .AddEntityFrameworkStores<UserDbContext>();
 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
-            
+
             // Configure GroceryListContext to use in-memory database.
             services.AddDbContext<GroceryListContext>(opt => opt.UseInMemoryDatabase());
 
-            services.Configure<IdentityOptions>(options => {
+            services.Configure<IdentityOptions>(options =>
+            {
                 options.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
                 {
-                    OnRedirectToLogin = ctx => 
+                    OnRedirectToLogin = ctx =>
                     {
-                        ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         return Task.FromResult(0);
                     }
                 };
@@ -59,6 +64,19 @@ namespace dotnet_grocery_list
 
             // Add framework services.
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info 
+                { 
+                    Title = "My API", 
+                    Version = "v1",
+                    Description = "A simple example ASP.NET Web API with JWT authentication",
+                    TermsOfService = "None",
+                    Contact = new Contact {Name = "Shayne Boyer", Email = "", Url = ""},
+                    License = new License {Name = "Use under LICX", Url = "https://example.com/license" }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,21 +117,28 @@ namespace dotnet_grocery_list
                 ValidAudience = audience
             };
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions 
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 TokenValidationParameters = tokenValidationParameters
             });
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions {
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false
             });
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }

@@ -1,0 +1,8 @@
+C:\projetos\estudos\dotnet-grocery-list\bin\Debug\netcoreapp1.1\dotnet-grocery-list.deps.json
+C:\projetos\estudos\dotnet-grocery-list\bin\Debug\netcoreapp1.1\dotnet-grocery-list.runtimeconfig.json
+C:\projetos\estudos\dotnet-grocery-list\bin\Debug\netcoreapp1.1\dotnet-grocery-list.runtimeconfig.dev.json
+C:\projetos\estudos\dotnet-grocery-list\bin\Debug\netcoreapp1.1\dotnet-grocery-list.dll
+C:\projetos\estudos\dotnet-grocery-list\bin\Debug\netcoreapp1.1\dotnet-grocery-list.pdb
+C:\projetos\estudos\dotnet-grocery-list\obj\Debug\netcoreapp1.1\dotnet-grocery-list.AssemblyInfo.cs
+C:\projetos\estudos\dotnet-grocery-list\obj\Debug\netcoreapp1.1\dotnet-grocery-list.dll
+C:\projetos\estudos\dotnet-grocery-list\obj\Debug\netcoreapp1.1\dotnet-grocery-list.pdb
